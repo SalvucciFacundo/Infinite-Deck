@@ -7,7 +7,7 @@
     "rules": "storage.rules"
   },
   "hosting": {
-    "public": "dist/infinite-deck/browser",
+    "public": "dist/Infinite-Deck/browser",
     "ignore": [
       "firebase.json",
       "**/.*",
