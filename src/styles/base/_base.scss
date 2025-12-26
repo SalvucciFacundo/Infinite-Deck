@@ -1,0 +1,20 @@
+@use '../abstracts/variables' as *;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: $color-bg;
+  color: $color-text;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  line-height: 1.5;
+  overflow: hidden; // Infinite canvas will handle its own scrolling
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}

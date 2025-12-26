@@ -1,0 +1,23 @@
+// --- Color Palette (Vibrant & Dark) ---
+$color-bg: #0a0a0c;
+$color-surface: #16161a;
+$color-primary: #6366f1; // Indigo
+$color-secondary: #ec4899; // Pink
+$color-accent: #10b981; // Emerald
+$color-text: #f8fafc;
+$color-text-muted: #94a3b8;
+
+// --- Spacing ---
+$spacing-xs: 0.25rem;
+$spacing-sm: 0.5rem;
+$spacing-md: 1rem;
+$spacing-lg: 2rem;
+$spacing-xl: 4rem;
+
+// --- Breakpoints ---
+$breakpoint-mobile: 768px;
+$breakpoint-desktop: 1024px;
+
+// --- Grid ---
+$bento-gap: 1.5rem;
+$bento-radius: 1.5rem;
