@@ -1,0 +1,36 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Función para verificar si es el administrador
+    function isAdmin() {
+      return request.auth != null && request.auth.token.email == 'salvucci1288@gmail.com'; // TODO: Cambiar por tu email real
+    }
+
+    // Perfiles de usuario: Los dueños pueden editar su propio perfil
+    match /users/{userId} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // Imágenes: Solo el administrador puede subir/borrar. Todos pueden leer.
+    // Los usuarios pueden dar 'like' a través de una actualización controlada.
+    match /images/{imageId} {
+      allow read: if true;
+      allow create, delete: if isAdmin();
+      allow update: if request.auth != null && (
+        isAdmin() || 
+        // Permitir solo actualizar likedBy y likeCount con ciertas condiciones
+        (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['likedBy', 'likeCount']))
+      );
+    }
+
+    // Comentarios: Cualquiera autenticado puede comentar, pero no borrar los de otros
+    match /comments/{commentId} {
+      allow read: if true;
+      allow create: if request.auth != null;
+      allow delete, update: if request.auth != null && (request.auth.uid == resource.data.userId || isAdmin());
+    }
+  }
+}

@@ -1,0 +1,30 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // Función para verificar si es el administrador
+    function isAdmin() {
+      return request.auth != null && request.auth.token.email == 'salvucci1288@gmail.com'; // TODO: Cambiar por tu email real
+    }
+
+    // Carpeta de obras de arte: Solo el admin sube/borra. Lectura pública.
+    match /artworks/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Carpeta de avatares: Cada usuario sube el suyo, limitado a imágenes pequeñas
+    match /avatars/{userId}/{allPaths=**} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.uid == userId 
+                   && request.resource.size < 5 * 1024 * 1024 // Máximo 5MB
+                   && request.resource.contentType.matches('image/.*');
+    }
+    
+    // Bloquear todo lo demás por defecto
+    match /{allPaths=**} {
+      allow read, write: if isAdmin();
+    }
+  }
+}
