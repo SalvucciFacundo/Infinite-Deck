@@ -1,37 +1,17 @@
-<header class="app-header">
-  <nav class="nav-container">
-    <a routerLink="/" class="logo">{{ title() }}</a>
+<app-sidebar />
 
-    <div class="nav-actions">
-      @if (auth.currentUser(); as user) {
-      <div class="user-actions">
-        <app-image-uploader />
-        <div class="user-profile">
-          <img
-            [src]="user.photoURL || 'assets/default-avatar.png'"
-            [alt]="user.displayName"
-            class="avatar"
-          />
-          <div class="user-info-mini">
-            <span class="username">{{ user.displayName || user.email }}</span>
-            <a routerLink="/perfil" class="link-profile">Mi Perfil</a>
-          </div>
-          <button (click)="auth.logout()" class="btn-logout">Salir</button>
-        </div>
-      </div>
-      } @else {
-      <button (click)="showAuthModal.set(true)" class="btn-login">Entrar / Registro</button>
-      }
-    </div>
-  </nav>
-</header>
-
-<main class="app-main">
+<main class="main-layout">
   <router-outlet />
+
+  @if (auth.currentUser()) {
+  <div class="floating-admin">
+    <app-image-uploader />
+  </div>
+  }
 </main>
 
 @if (showAuthModal()) {
-<div class="modal-overlay" (click)="showAuthModal.set(false)">
+<div class="modal-overlay" (click)="ui.closeAuthModal()">
   <div class="auth-modal" (click)="$event.stopPropagation()" [formGroup]="authForm">
     <h2>{{ isRegistering() ? 'Crear cuenta' : 'Iniciar sesión' }}</h2>
 
@@ -61,7 +41,7 @@
       <a (click)="toggleAuthMode()">{{ isRegistering() ? 'Inicia sesión' : 'Regístrate aquí' }}</a>
     </p>
 
-    <button (click)="showAuthModal.set(false)" class="btn-close">Cerrar</button>
+    <button (click)="ui.closeAuthModal()" class="btn-close">Cerrar</button>
   </div>
 </div>
 } @if (state.selectedImage()) {
